@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <linearGradient id="docGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#64B5F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#42A5F5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="checkGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A5D6A7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#66BB6A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Document base -->
+  <rect x="6" y="4" width="24" height="32" rx="2" ry="2" fill="url(#docGradDark)"/>
+  
+  <!-- Document fold -->
+  <path d="M24 4 L30 10 L24 10 Z" fill="#1E88E5"/>
+  
+  <!-- Lines representing changelog entries -->
+  <rect x="10" y="14" width="16" height="2" rx="1" fill="white" opacity="0.95"/>
+  <rect x="10" y="19" width="12" height="2" rx="1" fill="white" opacity="0.8"/>
+  <rect x="10" y="24" width="14" height="2" rx="1" fill="white" opacity="0.8"/>
+  <rect x="10" y="29" width="10" height="2" rx="1" fill="white" opacity="0.6"/>
+  
+  <!-- Plus/Add badge -->
+  <circle cx="30" cy="30" r="9" fill="url(#checkGradDark)" stroke="white" stroke-width="2"/>
+  <rect x="27" y="28" width="6" height="2" rx="0.5" fill="white"/>
+  <rect x="29" y="26" width="2" height="6" rx="0.5" fill="white"/>
+</svg>
