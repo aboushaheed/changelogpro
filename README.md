@@ -134,4 +134,4 @@ This project is licensed under the Apache License 2.0 - see the LICENSE file for
 
 ## Support
 
-For bug reports and feature requests, please contact abdelmoula.souidi@gmail.com. For more information, visit [Izem Technologies](https://www.izemtechnologies.com).
+For bug reports and feature requests, please contact abdelmoula.souidi on gmail. For more information, visit [Izem Technologies](https://www.izemtechnologies.com).
