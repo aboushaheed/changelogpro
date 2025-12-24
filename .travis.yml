@@ -1,0 +1,52 @@
+language: java
+
+# Ubuntu LTS
+dist: focal
+
+jdk:
+  - temurin17
+
+# Variables utiles pour Gradle + CI
+env:
+  global:
+    - GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+    - JAVA_TOOL_OPTIONS="-Xmx2g"
+
+# Cache Gradle pour accélérer
+cache:
+  directories:
+    - $HOME/.gradle/caches
+    - $HOME/.gradle/wrapper
+
+# Travis clone shallow par défaut, mais certains builds préfèrent l'historique complet
+git:
+  depth: false
+
+# Prépare gradle wrapper
+before_install:
+  - chmod +x ./gradlew
+
+# Build + tests + packaging + checks IntelliJ
+script:
+  - ./gradlew --no-daemon --stacktrace clean check
+  - ./gradlew --no-daemon --stacktrace buildPlugin
+  - ./gradlew --no-daemon --stacktrace verifyPlugin
+
+# Publie l'artefact zip du plugin dans les "builds" Travis (si besoin)
+# Le zip est généralement dans build/distributions/*.zip
+before_deploy:
+  - ls -lah build/distributions || true
+
+deploy:
+  provider: releases
+  edge: true
+  token: $GITHUB_TOKEN
+  file_glob: true
+  file: build/distributions/*.zip
+  skip_cleanup: true
+  on:
+    tags: true
+
+# Optionnel : notifications
+notifications:
+  email: false
