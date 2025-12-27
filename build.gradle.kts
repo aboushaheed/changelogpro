@@ -1,42 +1,58 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.17.2"
+    id("org.jetbrains.intellij.platform") version "2.10.5"
 }
 
 group = "com.changelogpro"
-version = "1.0.1"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    // Test dependencies
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:4.11.0")
-    testImplementation("org.assertj:assertj-core:3.24.2")
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
-intellij {
-    version.set("2022.1.4")
-    type.set("IC")
-    updateSinceUntilBuild.set(false)
+dependencies {
+    intellijPlatform {
+        intellijIdeaCommunity("2024.3")
+        bundledPlugin("com.intellij.java")
+    }
+
+    // -----------------------------
+    // Tests (JUnit 5 + JUnit 4 support)
+    // -----------------------------
+    testImplementation(platform("org.junit:junit-bom:5.10.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
+    // REQUIRED to avoid: "Failed to load JUnit Platform"
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // If you still have JUnit 4 tests using org.junit.Test / @Rule TemporaryFolder:
+    testImplementation("junit:junit:4.13.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+
+    testImplementation("org.mockito:mockito-core:5.13.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.13.0")
+
+    testImplementation("org.assertj:assertj-core:3.26.3")
 }
 
 tasks {
-    withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+    withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
+        options.release.set(21)
     }
 
     test {
-        useJUnit()
+        useJUnitPlatform()
         testLogging {
             events("passed", "skipped", "failed")
             showStandardStreams = true
@@ -44,11 +60,12 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("221")
-        untilBuild.set("253.*")
-        
-        pluginDescription.set("""
-            <h2>ChangeLog Pro - Professional Changelog Management</h2>
+        sinceBuild.set("241")
+        untilBuild.set("243.*")
+
+        pluginDescription.set(
+            """
+            <h2>ChangeLog Pro - Professional Changelog Management &amp; Analytics</h2>
             
             <p><b>ChangeLog Pro</b> is a powerful IntelliJ IDEA plugin that helps you maintain professional, 
             well-structured changelogs following the <a href="https://keepachangelog.com">Keep a Changelog</a> 
@@ -56,43 +73,45 @@ tasks {
             
             <h3>Key Features</h3>
             <ul>
-                <li><b>Universal Git Support</b> - Works with GitHub, GitLab, Bitbucket, Azure DevOps, and any Git repository</li>
+                <li><b>Universal Git Support</b> - GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, Gogs</li>
                 <li><b>Multi-Step Wizard</b> - Guided changelog entry creation with validation</li>
-                <li><b>Issue Tracker Integration</b> - JIRA, GitHub Issues, GitLab Issues, YouTrack, and more</li>
-                <li><b>Auto-Detection</b> - Automatically detects your Git provider and issue tracker</li>
-                <li><b>Keep a Changelog Format</b> - Follows the industry-standard changelog format</li>
-                <li><b>Git Integration</b> - Automatic staging of changelog files</li>
-                <li><b>In-Plugin Documentation</b> - Complete guide to changelog best practices</li>
+                <li><b>Issue Tracker Integration</b> - JIRA, GitHub Issues, GitLab Issues, YouTrack, Linear</li>
+                <li><b>Keep a Changelog Format</b> - Industry-standard changelog format</li>
+                <li><b>Git Integration</b> - Automatic staging and commit URL linking</li>
             </ul>
             
-            <h3>Why Keep a Changelog?</h3>
-            <p>A changelog makes it easier for users and contributors to see what notable changes have been made 
-            between each release. It's a curated, chronologically ordered list of notable changes for each version 
-            of a project.</p>
-            
-            <h3>Getting Started</h3>
-            <ol>
-                <li>Open the ChangeLog Pro panel from the right sidebar</li>
-                <li>Click "Initialize Project" to set up your changelog structure</li>
-                <li>Use "New Entry" to add changelog entries as you develop</li>
-            </ol>
-            
-            <h3>Author</h3>
-            <p>Developed by <b>Abdelmoula SOUIDI</b></p>
-        """.trimIndent())
-        
-        changeNotes.set("""
-            <h3>Version 1.0.0</h3>
+            <h3>NEW in v2.0: Analytics Dashboard</h3>
             <ul>
-                <li>Initial release</li>
-                <li>Universal Git provider support (GitHub, GitLab, Bitbucket, Azure DevOps)</li>
-                <li>Multi-step changelog entry wizard</li>
-                <li>Issue tracker integration (JIRA, GitHub Issues, GitLab Issues, YouTrack)</li>
-                <li>Keep a Changelog format compliance</li>
-                <li>Comprehensive in-plugin documentation</li>
-                <li>IntelliJ IDEA 2022.1 - 2025.3 compatibility</li>
+                <li><b>Overview Cards</b> - Key metrics at a glance</li>
+                <li><b>Release Timeline</b> - Chronological view with filtering</li>
+                <li><b>Git Insights</b> - Conventional commits analysis, documentation coverage</li>
+                <li><b>Contributors Panel</b> - GitHub-style heatmap (52 weeks)</li>
+                <li><b>Health Score</b> - Project health rating with recommendations</li>
+                <li><b>Git History Import</b> - Import commits as changelog entries</li>
+                <li><b>HTML Export</b> - Export reports with light/dark themes</li>
             </ul>
-        """.trimIndent())
+            
+            <p>Developed by <b>Abdelmoula SOUIDI</b></p>
+            """.trimIndent()
+        )
+
+        changeNotes.set(
+            """
+            <h3>Version 2.0.0 - Analytics Dashboard</h3>
+            <ul>
+                <li><b>Added</b> - Complete Analytics Dashboard with 6 panels</li>
+                <li><b>Added</b> - Git History Import dialog</li>
+                <li><b>Added</b> - HTML Export with theme support</li>
+                <li><b>Added</b> - GitHub-style contribution heatmap</li>
+                <li><b>Added</b> - Health Score with recommendations</li>
+                <li><b>Added</b> - Breaking changes tracking</li>
+                <li><b>Added</b> - Bus factor calculation</li>
+                <li><b>Added</b> - Data caching (5 min expiry)</li>
+                <li><b>Changed</b> - Updated to Java 21</li>
+                <li><b>Fixed</b> - All action buttons now functional</li>
+            </ul>
+            """.trimIndent()
+        )
     }
 
     signPlugin {

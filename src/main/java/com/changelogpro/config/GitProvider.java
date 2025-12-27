@@ -5,26 +5,29 @@ package com.changelogpro.config;
  * Each provider has specific URL patterns for PRs/MRs and issues.
  */
 public enum GitProvider {
-    GITHUB("GitHub", "Pull Request", "PR", "/pull/", "/issues/"),
-    GITLAB("GitLab", "Merge Request", "MR", "/-/merge_requests/", "/-/issues/"),
-    BITBUCKET("Bitbucket", "Pull Request", "PR", "/pull-requests/", "/issues/"),
-    AZURE_DEVOPS("Azure DevOps", "Pull Request", "PR", "/pullrequest/", "/workitems/edit/"),
-    GITEA("Gitea", "Pull Request", "PR", "/pulls/", "/issues/"),
-    GOGS("Gogs", "Pull Request", "PR", "/pulls/", "/issues/"),
-    CUSTOM("Custom", "Pull Request", "PR", "/pull/", "/issues/");
+    GITHUB("GitHub", "Pull Request", "PR", "/pull/", "/issues/", "/commit/"),
+    GITLAB("GitLab", "Merge Request", "MR", "/-/merge_requests/", "/-/issues/", "/-/commit/"),
+    BITBUCKET("Bitbucket", "Pull Request", "PR", "/pull-requests/", "/issues/", "/commits/"),
+    AZURE_DEVOPS("Azure DevOps", "Pull Request", "PR", "/pullrequest/", "/workitems/edit/", "/commit/"),
+    GITEA("Gitea", "Pull Request", "PR", "/pulls/", "/issues/", "/commit/"),
+    GOGS("Gogs", "Pull Request", "PR", "/pulls/", "/issues/", "/commit/"),
+    CUSTOM("Custom", "Pull Request", "PR", "/pull/", "/issues/", "/commit/");
 
     private final String displayName;
     private final String prTermFull;
     private final String prTermShort;
     private final String prUrlPath;
     private final String issueUrlPath;
+    private final String commitUrlPath;
 
-    GitProvider(String displayName, String prTermFull, String prTermShort, String prUrlPath, String issueUrlPath) {
+    GitProvider(String displayName, String prTermFull, String prTermShort, 
+                String prUrlPath, String issueUrlPath, String commitUrlPath) {
         this.displayName = displayName;
         this.prTermFull = prTermFull;
         this.prTermShort = prTermShort;
         this.prUrlPath = prUrlPath;
         this.issueUrlPath = issueUrlPath;
+        this.commitUrlPath = commitUrlPath;
     }
 
     public String getDisplayName() {
@@ -45,6 +48,10 @@ public enum GitProvider {
 
     public String getIssueUrlPath() {
         return issueUrlPath;
+    }
+    
+    public String getCommitUrlPath() {
+        return commitUrlPath;
     }
 
     /**
@@ -67,6 +74,17 @@ public enum GitProvider {
         }
         String baseUrl = repoUrl.endsWith("/") ? repoUrl.substring(0, repoUrl.length() - 1) : repoUrl;
         return baseUrl + issueUrlPath + issueNumber;
+    }
+    
+    /**
+     * Build the full commit URL.
+     */
+    public String buildCommitUrl(String repoUrl, String commitHash) {
+        if (repoUrl == null || repoUrl.isEmpty() || commitHash == null || commitHash.isEmpty()) {
+            return "";
+        }
+        String baseUrl = repoUrl.endsWith("/") ? repoUrl.substring(0, repoUrl.length() - 1) : repoUrl;
+        return baseUrl + commitUrlPath + commitHash;
     }
 
     /**

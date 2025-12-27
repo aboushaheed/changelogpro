@@ -1,286 +1,282 @@
 package com.changelogpro.services;
 
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Unit tests for ProjectVersionService.
  * Tests version detection and manipulation for Maven and Gradle projects.
  */
-public class ProjectVersionServiceTest {
+class ProjectVersionServiceTest {
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    @TempDir
+    Path tempDir;
 
     // ========== Version Calculation Tests ==========
-    
+
     @Test
-    public void testCalculateNextSnapshotFromRelease() {
-        // Test static method behavior
+    void testCalculateNextSnapshotFromRelease() {
         String result = calculateNextSnapshot("1.2.3");
         assertEquals("1.2.4-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotFromSnapshot() {
+    void testCalculateNextSnapshotFromSnapshot() {
         String result = calculateNextSnapshot("1.2.3-SNAPSHOT");
         assertEquals("1.2.4-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotMajorVersion() {
+    void testCalculateNextSnapshotMajorVersion() {
         String result = calculateNextSnapshot("2.0.0");
         assertEquals("2.0.1-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotMinorVersion() {
+    void testCalculateNextSnapshotMinorVersion() {
         String result = calculateNextSnapshot("1.5.0");
         assertEquals("1.5.1-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotPatchVersion() {
+    void testCalculateNextSnapshotPatchVersion() {
         String result = calculateNextSnapshot("1.0.9");
         assertEquals("1.0.10-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotTwoPartVersion() {
+    void testCalculateNextSnapshotTwoPartVersion() {
         String result = calculateNextSnapshot("1.2");
         assertEquals("1.2.1-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotOnePartVersion() {
+    void testCalculateNextSnapshotOnePartVersion() {
         String result = calculateNextSnapshot("5");
         assertEquals("5.0.1-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotNull() {
+    void testCalculateNextSnapshotNull() {
         String result = calculateNextSnapshot(null);
         assertEquals("0.0.1-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotEmpty() {
+    void testCalculateNextSnapshotEmpty() {
         String result = calculateNextSnapshot("");
         assertEquals("0.0.1-SNAPSHOT", result);
     }
 
     @Test
-    public void testCalculateNextSnapshotWithQualifier() {
+    void testCalculateNextSnapshotWithQualifier() {
         String result = calculateNextSnapshot("1.2.3-RELEASE");
-        // Should handle qualifier gracefully
         assertThat(result).contains("SNAPSHOT");
     }
 
     // ========== Maven POM Parsing Tests ==========
-    
+
     @Test
-    public void testParseMavenVersionSimple() throws IOException {
+    void testParseMavenVersionSimple() throws IOException {
         String pomContent = "<?xml version=\"1.0\"?>\n" +
-            "<project>\n" +
-            "    <groupId>com.example</groupId>\n" +
-            "    <artifactId>my-app</artifactId>\n" +
-            "    <version>1.2.3</version>\n" +
-            "</project>";
-        
-        File pomFile = tempFolder.newFile("pom.xml");
+                "<project>\n" +
+                "    <groupId>com.example</groupId>\n" +
+                "    <artifactId>my-app</artifactId>\n" +
+                "    <version>1.2.3</version>\n" +
+                "</project>";
+
+        File pomFile = tempDir.resolve("pom.xml").toFile();
         writeFile(pomFile, pomContent);
-        
+
         String version = parseMavenVersion(pomFile);
         assertEquals("1.2.3", version);
     }
 
     @Test
-    public void testParseMavenVersionSnapshot() throws IOException {
+    void testParseMavenVersionSnapshot() throws IOException {
         String pomContent = "<?xml version=\"1.0\"?>\n" +
-            "<project>\n" +
-            "    <version>2.0.0-SNAPSHOT</version>\n" +
-            "</project>";
-        
-        File pomFile = tempFolder.newFile("pom.xml");
+                "<project>\n" +
+                "    <version>2.0.0-SNAPSHOT</version>\n" +
+                "</project>";
+
+        File pomFile = tempDir.resolve("pom.xml").toFile();
         writeFile(pomFile, pomContent);
-        
+
         String version = parseMavenVersion(pomFile);
         assertEquals("2.0.0-SNAPSHOT", version);
     }
 
     @Test
-    public void testParseMavenVersionWithNamespace() throws IOException {
+    void testParseMavenVersionWithNamespace() throws IOException {
         String pomContent = "<?xml version=\"1.0\"?>\n" +
-            "<project xmlns=\"http://maven.apache.org/POM/4.0.0\">\n" +
-            "    <modelVersion>4.0.0</modelVersion>\n" +
-            "    <version>3.1.4</version>\n" +
-            "</project>";
-        
-        File pomFile = tempFolder.newFile("pom.xml");
+                "<project xmlns=\"http://maven.apache.org/POM/4.0.0\">\n" +
+                "    <modelVersion>4.0.0</modelVersion>\n" +
+                "    <version>3.1.4</version>\n" +
+                "</project>";
+
+        File pomFile = tempDir.resolve("pom.xml").toFile();
         writeFile(pomFile, pomContent);
-        
+
         String version = parseMavenVersion(pomFile);
         assertEquals("3.1.4", version);
     }
 
     // ========== Gradle Version Parsing Tests ==========
-    
+
     @Test
-    public void testParseGradleVersionGroovy() throws IOException {
+    void testParseGradleVersionGroovy() throws IOException {
         String gradleContent = "plugins {\n" +
-            "    id 'java'\n" +
-            "}\n" +
-            "group = 'com.example'\n" +
-            "version = '1.0.0'\n";
-        
-        File gradleFile = tempFolder.newFile("build.gradle");
+                "    id 'java'\n" +
+                "}\n" +
+                "group = 'com.example'\n" +
+                "version = '1.0.0'\n";
+
+        File gradleFile = tempDir.resolve("build.gradle").toFile();
         writeFile(gradleFile, gradleContent);
-        
+
         String version = parseGradleVersion(gradleFile);
         assertEquals("1.0.0", version);
     }
 
     @Test
-    public void testParseGradleVersionGroovyDoubleQuotes() throws IOException {
+    void testParseGradleVersionGroovyDoubleQuotes() throws IOException {
         String gradleContent = "version = \"2.3.4\"\n";
-        
-        File gradleFile = tempFolder.newFile("build.gradle");
+
+        File gradleFile = tempDir.resolve("build.gradle").toFile();
         writeFile(gradleFile, gradleContent);
-        
+
         String version = parseGradleVersion(gradleFile);
         assertEquals("2.3.4", version);
     }
 
     @Test
-    public void testParseGradleVersionKotlin() throws IOException {
+    void testParseGradleVersionKotlin() throws IOException {
         String gradleContent = "plugins {\n" +
-            "    id(\"java\")\n" +
-            "}\n" +
-            "group = \"com.example\"\n" +
-            "version = \"1.5.0\"\n";
-        
-        File gradleFile = tempFolder.newFile("build.gradle.kts");
+                "    id(\"java\")\n" +
+                "}\n" +
+                "group = \"com.example\"\n" +
+                "version = \"1.5.0\"\n";
+
+        File gradleFile = tempDir.resolve("build.gradle.kts").toFile();
         writeFile(gradleFile, gradleContent);
-        
+
         String version = parseGradleVersion(gradleFile);
         assertEquals("1.5.0", version);
     }
 
     @Test
-    public void testParseGradleVersionFromProperties() throws IOException {
+    void testParseGradleVersionFromProperties() throws IOException {
         String propertiesContent = "version=3.0.0\n" +
-            "group=com.example\n";
-        
-        File propsFile = tempFolder.newFile("gradle.properties");
+                "group=com.example\n";
+
+        File propsFile = tempDir.resolve("gradle.properties").toFile();
         writeFile(propsFile, propertiesContent);
-        
+
         String version = parseGradlePropertiesVersion(propsFile);
         assertEquals("3.0.0", version);
     }
 
     // ========== Project Type Detection Tests ==========
-    
+
     @Test
-    public void testDetectMavenProject() throws IOException {
-        tempFolder.newFile("pom.xml");
-        
-        String projectType = detectProjectType(tempFolder.getRoot());
+    void testDetectMavenProject() throws IOException {
+        Files.createFile(tempDir.resolve("pom.xml"));
+
+        String projectType = detectProjectType(tempDir.toFile());
         assertEquals("MAVEN", projectType);
     }
 
     @Test
-    public void testDetectGradleGroovyProject() throws IOException {
-        tempFolder.newFile("build.gradle");
-        
-        String projectType = detectProjectType(tempFolder.getRoot());
+    void testDetectGradleGroovyProject() throws IOException {
+        Files.createFile(tempDir.resolve("build.gradle"));
+
+        String projectType = detectProjectType(tempDir.toFile());
         assertEquals("GRADLE_GROOVY", projectType);
     }
 
     @Test
-    public void testDetectGradleKotlinProject() throws IOException {
-        tempFolder.newFile("build.gradle.kts");
-        
-        String projectType = detectProjectType(tempFolder.getRoot());
+    void testDetectGradleKotlinProject() throws IOException {
+        Files.createFile(tempDir.resolve("build.gradle.kts"));
+
+        String projectType = detectProjectType(tempDir.toFile());
         assertEquals("GRADLE_KOTLIN", projectType);
     }
 
     @Test
-    public void testDetectUnknownProject() {
-        String projectType = detectProjectType(tempFolder.getRoot());
+    void testDetectUnknownProject() {
+        String projectType = detectProjectType(tempDir.toFile());
         assertEquals("UNKNOWN", projectType);
     }
 
     @Test
-    public void testMavenTakesPrecedenceOverGradle() throws IOException {
-        // When both exist, Maven should take precedence
-        tempFolder.newFile("pom.xml");
-        tempFolder.newFile("build.gradle");
-        
-        String projectType = detectProjectType(tempFolder.getRoot());
+    void testMavenTakesPrecedenceOverGradle() throws IOException {
+        Files.createFile(tempDir.resolve("pom.xml"));
+        Files.createFile(tempDir.resolve("build.gradle"));
+
+        String projectType = detectProjectType(tempDir.toFile());
         assertEquals("MAVEN", projectType);
     }
 
     // ========== Version Update Tests ==========
-    
+
     @Test
-    public void testUpdateMavenVersion() throws IOException {
+    void testUpdateMavenVersion() throws IOException {
         String pomContent = "<?xml version=\"1.0\"?>\n" +
-            "<project>\n" +
-            "    <version>1.0.0</version>\n" +
-            "</project>";
-        
-        File pomFile = tempFolder.newFile("pom.xml");
+                "<project>\n" +
+                "    <version>1.0.0</version>\n" +
+                "</project>";
+
+        File pomFile = tempDir.resolve("pom.xml").toFile();
         writeFile(pomFile, pomContent);
-        
+
         boolean result = updateMavenVersion(pomFile, "2.0.0");
         assertTrue(result);
-        
-        String updatedContent = new String(Files.readAllBytes(pomFile.toPath()));
+
+        String updatedContent = Files.readString(pomFile.toPath());
         assertThat(updatedContent).contains("<version>2.0.0</version>");
     }
 
     @Test
-    public void testUpdateGradleVersion() throws IOException {
+    void testUpdateGradleVersion() throws IOException {
         String gradleContent = "version = '1.0.0'\n";
-        
-        File gradleFile = tempFolder.newFile("build.gradle");
+
+        File gradleFile = tempDir.resolve("build.gradle").toFile();
         writeFile(gradleFile, gradleContent);
-        
+
         boolean result = updateGradleVersion(gradleFile, "2.0.0");
         assertTrue(result);
-        
-        String updatedContent = new String(Files.readAllBytes(gradleFile.toPath()));
+
+        String updatedContent = Files.readString(gradleFile.toPath());
         assertThat(updatedContent).contains("version = '2.0.0'");
     }
 
     @Test
-    public void testUpdateGradlePropertiesVersion() throws IOException {
+    void testUpdateGradlePropertiesVersion() throws IOException {
         String propsContent = "version=1.0.0\n";
-        
-        File propsFile = tempFolder.newFile("gradle.properties");
+
+        File propsFile = tempDir.resolve("gradle.properties").toFile();
         writeFile(propsFile, propsContent);
-        
+
         boolean result = updateGradlePropertiesVersion(propsFile, "2.0.0");
         assertTrue(result);
-        
-        String updatedContent = new String(Files.readAllBytes(propsFile.toPath()));
+
+        String updatedContent = Files.readString(propsFile.toPath());
         assertThat(updatedContent).contains("version=2.0.0");
     }
 
     // ========== Semantic Versioning Tests ==========
-    
+
     @Test
-    public void testSemanticVersionFormat() {
-        // Valid semantic versions
+    void testSemanticVersionFormat() {
         assertTrue(isValidSemanticVersion("1.0.0"));
         assertTrue(isValidSemanticVersion("0.1.0"));
         assertTrue(isValidSemanticVersion("10.20.30"));
@@ -290,8 +286,7 @@ public class ProjectVersionServiceTest {
     }
 
     @Test
-    public void testInvalidSemanticVersionFormat() {
-        // Invalid semantic versions
+    void testInvalidSemanticVersionFormat() {
         assertFalse(isValidSemanticVersion("1"));
         assertFalse(isValidSemanticVersion("1.0"));
         assertFalse(isValidSemanticVersion("v1.0.0"));
@@ -302,7 +297,7 @@ public class ProjectVersionServiceTest {
     }
 
     // ========== Helper Methods ==========
-    
+
     private void writeFile(File file, String content) throws IOException {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(content);
@@ -310,24 +305,24 @@ public class ProjectVersionServiceTest {
     }
 
     // Simulated methods for testing logic without IntelliJ dependencies
-    
+
     private String calculateNextSnapshot(String version) {
         if (version == null || version.isEmpty()) {
             return "0.0.1-SNAPSHOT";
         }
-        
+
         String cleanVersion = version.replace("-SNAPSHOT", "").replaceAll("-.*", "");
         String[] parts = cleanVersion.split("\\.");
-        
+
         int major = parts.length > 0 ? Integer.parseInt(parts[0]) : 0;
         int minor = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
         int patch = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
-        
+
         return major + "." + minor + "." + (patch + 1) + "-SNAPSHOT";
     }
 
     private String parseMavenVersion(File pomFile) throws IOException {
-        String content = new String(Files.readAllBytes(pomFile.toPath()));
+        String content = Files.readString(pomFile.toPath());
         java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("<version>([^<]+)</version>");
         java.util.regex.Matcher matcher = pattern.matcher(content);
         if (matcher.find()) {
@@ -337,7 +332,7 @@ public class ProjectVersionServiceTest {
     }
 
     private String parseGradleVersion(File gradleFile) throws IOException {
-        String content = new String(Files.readAllBytes(gradleFile.toPath()));
+        String content = Files.readString(gradleFile.toPath());
         java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("version\\s*=\\s*['\"]([^'\"]+)['\"]");
         java.util.regex.Matcher matcher = pattern.matcher(content);
         if (matcher.find()) {
@@ -347,7 +342,7 @@ public class ProjectVersionServiceTest {
     }
 
     private String parseGradlePropertiesVersion(File propsFile) throws IOException {
-        String content = new String(Files.readAllBytes(propsFile.toPath()));
+        String content = Files.readString(propsFile.toPath());
         java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("version\\s*=\\s*(.+)");
         java.util.regex.Matcher matcher = pattern.matcher(content);
         if (matcher.find()) {
@@ -368,23 +363,23 @@ public class ProjectVersionServiceTest {
     }
 
     private boolean updateMavenVersion(File pomFile, String newVersion) throws IOException {
-        String content = new String(Files.readAllBytes(pomFile.toPath()));
+        String content = Files.readString(pomFile.toPath());
         String updated = content.replaceFirst("<version>[^<]+</version>", "<version>" + newVersion + "</version>");
-        Files.write(pomFile.toPath(), updated.getBytes());
+        Files.writeString(pomFile.toPath(), updated);
         return true;
     }
 
     private boolean updateGradleVersion(File gradleFile, String newVersion) throws IOException {
-        String content = new String(Files.readAllBytes(gradleFile.toPath()));
+        String content = Files.readString(gradleFile.toPath());
         String updated = content.replaceFirst("version\\s*=\\s*['\"][^'\"]+['\"]", "version = '" + newVersion + "'");
-        Files.write(gradleFile.toPath(), updated.getBytes());
+        Files.writeString(gradleFile.toPath(), updated);
         return true;
     }
 
     private boolean updateGradlePropertiesVersion(File propsFile, String newVersion) throws IOException {
-        String content = new String(Files.readAllBytes(propsFile.toPath()));
+        String content = Files.readString(propsFile.toPath());
         String updated = content.replaceFirst("version\\s*=\\s*.+", "version=" + newVersion);
-        Files.write(propsFile.toPath(), updated.getBytes());
+        Files.writeString(propsFile.toPath(), updated);
         return true;
     }
 

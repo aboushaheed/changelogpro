@@ -1,29 +1,49 @@
 <idea-plugin>
     <id>com.changelogpro</id>
     <name>ChangeLog Pro</name>
-    <version>1.0.0</version>
-    <vendor email="abdelmoula.souidi@gmail.com" url="https://www.izemtechnologies.com">Abdelmoula SOUIDI</vendor>
+    <version>2.0.0</version>
+    <vendor email="abdelmoula.souidi@gmail.com" url="https://github.com/asouidi/changelog-pro">Abdelmoula SOUIDI</vendor>
 
     <description><![CDATA[
-    <h2>Professional Changelog Management for IntelliJ IDEA</h2>
+    <h2>Professional Changelog Management &amp; Analytics for IntelliJ IDEA</h2>
     
-    <p>ChangeLog Pro helps you maintain professional, well-structured changelogs following the 
+    <p><b>ChangeLog Pro</b> helps you maintain professional, well-structured changelogs following the 
     <a href="https://keepachangelog.com">Keep a Changelog</a> standard and 
     <a href="https://semver.org">Semantic Versioning</a> principles.</p>
     
-    <h3>Key Features</h3>
+    <h3>🚀 Key Features</h3>
     <ul>
-        <li><b>Universal Git Support</b> - Works with GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, Gogs, and any Git repository</li>
+        <li><b>Universal Git Support</b> - Works with GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, Gogs</li>
         <li><b>Multi-Step Wizard</b> - Guided changelog entry creation with validation and preview</li>
-        <li><b>Issue Tracker Integration</b> - JIRA, GitHub Issues, GitLab Issues, YouTrack, Linear, Azure Boards, and more</li>
-        <li><b>Auto-Detection</b> - Automatically detects your Git provider and suggests appropriate settings</li>
-        <li><b>Keep a Changelog Format</b> - Follows the industry-standard changelog format with six change types</li>
+        <li><b>Issue Tracker Integration</b> - JIRA, GitHub Issues, GitLab Issues, YouTrack, Linear, Azure Boards</li>
+        <li><b>Auto-Detection</b> - Automatically detects your Git provider and suggests settings</li>
+        <li><b>Keep a Changelog Format</b> - Industry-standard changelog format with six change types</li>
         <li><b>Git Integration</b> - Automatic staging of changelog files after creation</li>
         <li><b>Fragment-Based Approach</b> - Each change is a separate file, preventing merge conflicts</li>
-        <li><b>Comprehensive Documentation</b> - Built-in help explaining changelog best practices</li>
     </ul>
     
-    <h3>Change Types Supported</h3>
+    <h3>📊 NEW: Analytics Dashboard (v2.0)</h3>
+    <ul>
+        <li><b>Overview Cards</b> - Releases count, commits, average release cycle, current version</li>
+        <li><b>Release Timeline</b> - Chronological view with filtering (All Time, Last Year, 6/3 Months)</li>
+        <li><b>Changes Distribution</b> - Visual breakdown by change type with bar charts</li>
+        <li><b>Git Insights</b> - Commit activity, conventional commits %, documentation coverage</li>
+        <li><b>Contributors Panel</b> - Leaderboard with GitHub-style activity heatmap (52 weeks)</li>
+        <li><b>Health Score</b> - Project health rating (0-100) with actionable recommendations</li>
+        <li><b>Git History Import</b> - Import changelog entries from Git commits</li>
+        <li><b>HTML Export</b> - Export analytics reports with light/dark theme support</li>
+    </ul>
+    
+    <h3>📈 Advanced Analytics</h3>
+    <ul>
+        <li><b>Conventional Commits Analysis</b> - Detection of feat, fix, docs, refactor, etc.</li>
+        <li><b>Breaking Changes Tracking</b> - Highlights breaking changes across releases</li>
+        <li><b>Bus Factor Calculation</b> - Team risk assessment</li>
+        <li><b>Release Velocity</b> - Average days between releases</li>
+        <li><b>Code Coverage Metrics</b> - Documented vs undocumented commits</li>
+    </ul>
+    
+    <h3>📝 Change Types Supported</h3>
     <ul>
         <li><b>Added</b> - New features</li>
         <li><b>Changed</b> - Changes in existing functionality</li>
@@ -33,38 +53,66 @@
         <li><b>Security</b> - Vulnerability fixes</li>
     </ul>
     
-    <h3>Getting Started</h3>
+    <h3>🏁 Getting Started</h3>
     <ol>
-        <li>Open the ChangeLog Pro panel from the right sidebar</li>
-        <li>Click "Initialize Project" to set up the changelog structure</li>
-        <li>Use "New Entry" or Quick Add buttons to create changelog entries</li>
-        <li>Entries are saved as YAML files in <code>.changes/unreleased/</code></li>
+        <li>Open the <b>ChangeLog Pro</b> panel from the right sidebar</li>
+        <li>Click <b>"Initialize Project"</b> to set up the changelog structure</li>
+        <li>Use <b>"New Entry"</b> or Quick Add buttons to create changelog entries</li>
+        <li>View the <b>Analytics</b> tab for project insights and metrics</li>
+        <li>Use <b>"Import Git"</b> to import commits as changelog entries</li>
     </ol>
     
-    <h3>Why Keep a Changelog?</h3>
+    <h3>💡 Why Keep a Changelog?</h3>
     <p>A changelog makes it easier for users and contributors to see precisely what notable changes 
     have been made between each release. It's for humans, not machines.</p>
+    
+    <p><a href="https://github.com/asouidi/changelog-pro">GitHub Repository</a> | 
+    <a href="https://github.com/asouidi/changelog-pro/issues">Report Issues</a></p>
     ]]></description>
 
     <change-notes><![CDATA[
+    <h3>Version 2.0.0 - Analytics Dashboard</h3>
+    <ul>
+        <li><b>Added</b> - Complete Analytics Dashboard with 6 panels</li>
+        <li><b>Added</b> - Overview Cards showing key metrics (releases, commits, cycle, version)</li>
+        <li><b>Added</b> - Release Timeline with period filtering</li>
+        <li><b>Added</b> - Changes Distribution panel with bar charts</li>
+        <li><b>Added</b> - Git Insights with conventional commits analysis</li>
+        <li><b>Added</b> - Contributors panel with GitHub-style heatmap (52 weeks)</li>
+        <li><b>Added</b> - Health Score with grade system and recommendations</li>
+        <li><b>Added</b> - Git History Import dialog for importing commits</li>
+        <li><b>Added</b> - HTML Export with light/dark theme support</li>
+        <li><b>Added</b> - Breaking changes tracking and highlighting</li>
+        <li><b>Added</b> - Bus factor calculation for team risk assessment</li>
+        <li><b>Added</b> - Data caching with 5-minute expiry</li>
+        <li><b>Added</b> - Auto-refresh when Analytics tab is opened</li>
+        <li><b>Changed</b> - ChangeEntry now supports commitHash and breakingChange fields</li>
+        <li><b>Changed</b> - GitProvider now supports commit URL building</li>
+        <li><b>Fixed</b> - Timeline period filter now properly filters releases</li>
+        <li><b>Fixed</b> - Health panel actions now wire to real dialogs</li>
+    </ul>
+    
+    <h3>Version 1.0.1</h3>
+    <ul>
+        <li><b>Fixed</b> - Replaced deprecated Project.getBaseDir() API</li>
+        <li><b>Fixed</b> - Improved compatibility with IntelliJ IDEA 2025.x</li>
+    </ul>
+    
     <h3>Version 1.0.0</h3>
     <ul>
         <li><b>Added</b> - Initial release of ChangeLog Pro</li>
         <li><b>Added</b> - Multi-step wizard for creating changelog entries</li>
         <li><b>Added</b> - Quick Add buttons for rapid entry creation</li>
-        <li><b>Added</b> - Support for GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, Gogs</li>
-        <li><b>Added</b> - Integration with JIRA, GitHub Issues, GitLab Issues, YouTrack, Linear, Azure Boards</li>
+        <li><b>Added</b> - Support for 6 Git providers and 7 issue trackers</li>
         <li><b>Added</b> - Automatic Git staging of changelog files</li>
         <li><b>Added</b> - Comprehensive in-plugin documentation</li>
-        <li><b>Added</b> - Right sidebar tool window with Actions, Config, Log, and Help tabs</li>
-        <li><b>Added</b> - Keyboard shortcut (Ctrl+Alt+L) for quick entry creation</li>
     </ul>
     ]]></change-notes>
 
-    <!-- Product compatibility -->
+    <!-- Product compatibility: IntelliJ IDEA 2022.1+ -->
     <idea-version since-build="221" until-build="253.*"/>
 
-    <!-- Dependencies - only platform, no Git4Idea to avoid optional dependency issues -->
+    <!-- Dependencies -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -82,8 +130,7 @@
         <postStartupActivity implementation="com.changelogpro.ChangeLogStartupActivity"/>
         
         <!-- Notification Group -->
-        <notificationGroup id="ChangeLog Pro"
-                          displayType="BALLOON"/>
+        <notificationGroup id="ChangeLog Pro" displayType="BALLOON"/>
     </extensions>
 
     <actions>
@@ -98,6 +145,17 @@
                     icon="AllIcons.General.Add">
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt L"/>
             </action>
+        </group>
+        
+        <!-- Editor popup menu -->
+        <group id="ChangeLogPro.EditorPopup">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <separator/>
+            <action id="ChangeLogPro.NewEntryFromEditor"
+                    class="com.changelogpro.actions.NewEntryAction"
+                    text="Add to Changelog"
+                    description="Create a changelog entry from selected text"
+                    icon="AllIcons.General.Add"/>
         </group>
     </actions>
 </idea-plugin>

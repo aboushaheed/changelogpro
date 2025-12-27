@@ -1,192 +1,193 @@
 package com.changelogpro.config;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for ChangeType enum.
  */
-public class ChangeTypeTest {
+class ChangeTypeTest {
 
     // ========== Display Name Tests ==========
-    
+
     @Test
-    public void testAddedDisplayName() {
+    void testAddedDisplayName() {
         assertEquals("Added", ChangeType.ADDED.getDisplayName());
     }
 
     @Test
-    public void testChangedDisplayName() {
+    void testChangedDisplayName() {
         assertEquals("Changed", ChangeType.CHANGED.getDisplayName());
     }
 
     @Test
-    public void testDeprecatedDisplayName() {
+    void testDeprecatedDisplayName() {
         assertEquals("Deprecated", ChangeType.DEPRECATED.getDisplayName());
     }
 
     @Test
-    public void testRemovedDisplayName() {
+    void testRemovedDisplayName() {
         assertEquals("Removed", ChangeType.REMOVED.getDisplayName());
     }
 
     @Test
-    public void testFixedDisplayName() {
+    void testFixedDisplayName() {
         assertEquals("Fixed", ChangeType.FIXED.getDisplayName());
     }
 
     @Test
-    public void testSecurityDisplayName() {
+    void testSecurityDisplayName() {
         assertEquals("Security", ChangeType.SECURITY.getDisplayName());
     }
 
     // ========== Directory Name Tests ==========
-    
+
     @Test
-    public void testAddedDirectoryName() {
+    void testAddedDirectoryName() {
         assertEquals("added", ChangeType.ADDED.getDirectoryName());
     }
 
     @Test
-    public void testChangedDirectoryName() {
+    void testChangedDirectoryName() {
         assertEquals("changed", ChangeType.CHANGED.getDirectoryName());
     }
 
     @Test
-    public void testDeprecatedDirectoryName() {
+    void testDeprecatedDirectoryName() {
         assertEquals("deprecated", ChangeType.DEPRECATED.getDirectoryName());
     }
 
     @Test
-    public void testRemovedDirectoryName() {
+    void testRemovedDirectoryName() {
         assertEquals("removed", ChangeType.REMOVED.getDirectoryName());
     }
 
     @Test
-    public void testFixedDirectoryName() {
+    void testFixedDirectoryName() {
         assertEquals("fixed", ChangeType.FIXED.getDirectoryName());
     }
 
     @Test
-    public void testSecurityDirectoryName() {
+    void testSecurityDirectoryName() {
         assertEquals("security", ChangeType.SECURITY.getDirectoryName());
     }
 
     // ========== Description Tests ==========
-    
+
     @Test
-    public void testAddedDescription() {
+    void testAddedDescription() {
         assertThat(ChangeType.ADDED.getDescription()).contains("New feature");
     }
 
     @Test
-    public void testChangedDescription() {
+    void testChangedDescription() {
         assertThat(ChangeType.CHANGED.getDescription()).contains("existing functionality");
     }
 
     @Test
-    public void testDeprecatedDescription() {
+    void testDeprecatedDescription() {
         assertThat(ChangeType.DEPRECATED.getDescription()).contains("removed");
     }
 
     @Test
-    public void testRemovedDescription() {
+    void testRemovedDescription() {
         assertThat(ChangeType.REMOVED.getDescription()).contains("removed");
     }
 
     @Test
-    public void testFixedDescription() {
+    void testFixedDescription() {
         assertThat(ChangeType.FIXED.getDescription()).contains("Bug fix");
     }
 
     @Test
-    public void testSecurityDescription() {
+    void testSecurityDescription() {
         assertThat(ChangeType.SECURITY.getDescription()).contains("Vulnerability");
     }
 
     // ========== Color Tests ==========
-    
+
     @Test
-    public void testAddedColor() {
+    void testAddedColor() {
         assertThat(ChangeType.ADDED.getColor()).startsWith("#");
     }
 
     @Test
-    public void testFixedColor() {
+    void testFixedColor() {
         assertThat(ChangeType.FIXED.getColor()).startsWith("#");
     }
 
     @Test
-    public void testSecurityColor() {
+    void testSecurityColor() {
         assertThat(ChangeType.SECURITY.getColor()).startsWith("#");
     }
 
     // ========== Markdown Header Tests ==========
-    
+
     @Test
-    public void testAddedMarkdownHeader() {
+    void testAddedMarkdownHeader() {
         assertEquals("### Added", ChangeType.ADDED.getMarkdownHeader());
     }
 
     @Test
-    public void testFixedMarkdownHeader() {
+    void testFixedMarkdownHeader() {
         assertEquals("### Fixed", ChangeType.FIXED.getMarkdownHeader());
     }
 
     @Test
-    public void testSecurityMarkdownHeader() {
+    void testSecurityMarkdownHeader() {
         assertEquals("### Security", ChangeType.SECURITY.getMarkdownHeader());
     }
 
     // ========== All Types Exist Tests ==========
-    
+
     @Test
-    public void testAllTypesHaveDisplayName() {
+    void testAllTypesHaveDisplayName() {
         for (ChangeType type : ChangeType.values()) {
             assertThat(type.getDisplayName()).isNotNull().isNotEmpty();
         }
     }
 
     @Test
-    public void testAllTypesHaveDirectoryName() {
+    void testAllTypesHaveDirectoryName() {
         for (ChangeType type : ChangeType.values()) {
             assertThat(type.getDirectoryName()).isNotNull().isNotEmpty();
         }
     }
 
     @Test
-    public void testAllTypesHaveDescription() {
+    void testAllTypesHaveDescription() {
         for (ChangeType type : ChangeType.values()) {
             assertThat(type.getDescription()).isNotNull().isNotEmpty();
         }
     }
 
     @Test
-    public void testAllTypesHaveColor() {
+    void testAllTypesHaveColor() {
         for (ChangeType type : ChangeType.values()) {
             assertThat(type.getColor()).isNotNull().startsWith("#");
         }
     }
 
     @Test
-    public void testAllTypesHaveIcon() {
+    void testAllTypesHaveIcon() {
         for (ChangeType type : ChangeType.values()) {
             assertThat(type.getIcon()).isNotNull();
         }
     }
 
     @Test
-    public void testAllTypesHaveMarkdownHeader() {
+    void testAllTypesHaveMarkdownHeader() {
         for (ChangeType type : ChangeType.values()) {
             assertThat(type.getMarkdownHeader()).isNotNull().startsWith("### ");
         }
     }
 
     // ========== Keep a Changelog Compliance Tests ==========
-    
+
     @Test
-    public void testAllKeepAChangelogTypesExist() {
+    void testAllKeepAChangelogTypesExist() {
         // Keep a Changelog specifies these 6 types
         assertThat(ChangeType.values()).hasSize(6);
         assertNotNull(ChangeType.ADDED);
@@ -198,18 +199,18 @@ public class ChangeTypeTest {
     }
 
     // ========== ToString Tests ==========
-    
+
     @Test
-    public void testToString() {
+    void testToString() {
         assertEquals("Added", ChangeType.ADDED.toString());
         assertEquals("Fixed", ChangeType.FIXED.toString());
         assertEquals("Security", ChangeType.SECURITY.toString());
     }
 
     // ========== Directory Name Lowercase Tests ==========
-    
+
     @Test
-    public void testDirectoryNamesAreLowercase() {
+    void testDirectoryNamesAreLowercase() {
         for (ChangeType type : ChangeType.values()) {
             String dirName = type.getDirectoryName();
             assertEquals(dirName.toLowerCase(), dirName);
@@ -217,16 +218,16 @@ public class ChangeTypeTest {
     }
 
     // ========== Enum Value Tests ==========
-    
+
     @Test
-    public void testValueOf() {
+    void testValueOf() {
         assertEquals(ChangeType.ADDED, ChangeType.valueOf("ADDED"));
         assertEquals(ChangeType.FIXED, ChangeType.valueOf("FIXED"));
         assertEquals(ChangeType.SECURITY, ChangeType.valueOf("SECURITY"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testValueOfInvalid() {
-        ChangeType.valueOf("INVALID");
+    @Test
+    void testValueOfInvalid() {
+        assertThrows(IllegalArgumentException.class, () -> ChangeType.valueOf("INVALID"));
     }
 }

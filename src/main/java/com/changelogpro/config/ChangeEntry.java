@@ -24,6 +24,8 @@ public class ChangeEntry {
     private String prNumber;
     private String author;
     private String filePath;
+    private String commitHash;
+    private boolean breakingChange;
     
     /**
      * Create a new changelog entry with default values.
@@ -38,6 +40,8 @@ public class ChangeEntry {
         this.prNumber = "";
         this.author = System.getProperty("user.name", "");
         this.filePath = "";
+        this.commitHash = "";
+        this.breakingChange = false;
     }
     
     /**
@@ -46,6 +50,15 @@ public class ChangeEntry {
     public ChangeEntry(@NotNull ChangeType type) {
         this();
         this.type = type;
+    }
+    
+    /**
+     * Create a new changelog entry with type and description.
+     */
+    public ChangeEntry(@NotNull ChangeType type, @Nullable String description) {
+        this();
+        this.type = type;
+        this.description = description != null ? description : "";
     }
     
     /**
@@ -86,6 +99,10 @@ public class ChangeEntry {
         yaml.append("type: ").append(type.name().toLowerCase()).append("\n");
         yaml.append("description: \"").append(escapeYaml(description)).append("\"\n");
         
+        if (breakingChange) {
+            yaml.append("breaking_change: true\n");
+        }
+        
         if (issueId != null && !issueId.isEmpty()) {
             yaml.append("issue: \"").append(issueId).append("\"\n");
             
@@ -106,6 +123,10 @@ public class ChangeEntry {
             }
         }
         
+        if (commitHash != null && !commitHash.isEmpty()) {
+            yaml.append("commit: \"").append(commitHash).append("\"\n");
+        }
+        
         if (author != null && !author.isEmpty()) {
             yaml.append("author: \"").append(author).append("\"\n");
         }
@@ -120,7 +141,14 @@ public class ChangeEntry {
      */
     public String toMarkdown(@NotNull ChangeLogConfig config) {
         StringBuilder md = new StringBuilder();
-        md.append("- ").append(description);
+        md.append("- ");
+        
+        // Add breaking change indicator
+        if (breakingChange) {
+            md.append("**BREAKING:** ");
+        }
+        
+        md.append(description);
         
         // Add PR/MR link
         if (prNumber != null && !prNumber.isEmpty()) {
@@ -140,6 +168,16 @@ public class ChangeEntry {
                 md.append(" closes [").append(issueId).append("](").append(issueUrl).append(")");
             } else {
                 md.append(" closes ").append(issueId);
+            }
+        }
+        
+        // Add commit hash reference
+        if (commitHash != null && !commitHash.isEmpty()) {
+            String commitUrl = config.getGitProvider().buildCommitUrl(config.getRepoUrl(), commitHash);
+            if (!commitUrl.isEmpty()) {
+                md.append(" ([").append(commitHash).append("](").append(commitUrl).append("))");
+            } else {
+                md.append(" (").append(commitHash).append(")");
             }
         }
         
@@ -267,5 +305,21 @@ public class ChangeEntry {
     
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+    
+    public String getCommitHash() {
+        return commitHash;
+    }
+    
+    public void setCommitHash(String commitHash) {
+        this.commitHash = commitHash != null ? commitHash : "";
+    }
+    
+    public boolean isBreakingChange() {
+        return breakingChange;
+    }
+    
+    public void setBreakingChange(boolean breakingChange) {
+        this.breakingChange = breakingChange;
     }
 }

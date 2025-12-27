@@ -1,340 +1,341 @@
 package com.changelogpro.config;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for IssueTracker enum.
  */
-public class IssueTrackerTest {
+class IssueTrackerTest {
 
     // ========== JIRA Tests ==========
-    
+
     @Test
-    public void testJiraDisplayName() {
+    void testJiraDisplayName() {
         assertEquals("JIRA", IssueTracker.JIRA.getDisplayName());
     }
 
     @Test
-    public void testJiraTermName() {
+    void testJiraTermName() {
         assertEquals("Issue", IssueTracker.JIRA.getTermName());
     }
 
     @Test
-    public void testJiraUrlPath() {
+    void testJiraUrlPath() {
         assertEquals("/browse/", IssueTracker.JIRA.getUrlPath());
     }
 
     @Test
-    public void testJiraExampleFormat() {
+    void testJiraExampleFormat() {
         assertEquals("PROJECT-123", IssueTracker.JIRA.getExampleFormat());
     }
 
     @Test
-    public void testJiraBuildIssueUrl() {
+    void testJiraBuildIssueUrl() {
         String url = IssueTracker.JIRA.buildIssueUrl("https://mycompany.atlassian.net", "PROJ-123");
         assertEquals("https://mycompany.atlassian.net/browse/PROJ-123", url);
     }
 
     @Test
-    public void testJiraBuildIssueUrlWithTrailingSlash() {
+    void testJiraBuildIssueUrlWithTrailingSlash() {
         String url = IssueTracker.JIRA.buildIssueUrl("https://mycompany.atlassian.net/", "PROJ-123");
         assertEquals("https://mycompany.atlassian.net/browse/PROJ-123", url);
     }
 
     // ========== GitHub Issues Tests ==========
-    
+
     @Test
-    public void testGitHubIssuesDisplayName() {
+    void testGitHubIssuesDisplayName() {
         assertEquals("GitHub Issues", IssueTracker.GITHUB_ISSUES.getDisplayName());
     }
 
     @Test
-    public void testGitHubIssuesBuildUrl() {
+    void testGitHubIssuesBuildUrl() {
         String url = IssueTracker.GITHUB_ISSUES.buildIssueUrl("https://github.com/user/repo", "42");
         assertEquals("https://github.com/user/repo/issues/42", url);
     }
 
     @Test
-    public void testGitHubIssuesBuildUrlWithHash() {
+    void testGitHubIssuesBuildUrlWithHash() {
         String url = IssueTracker.GITHUB_ISSUES.buildIssueUrl("https://github.com/user/repo", "#42");
         assertEquals("https://github.com/user/repo/issues/42", url);
     }
 
     // ========== GitLab Issues Tests ==========
-    
+
     @Test
-    public void testGitLabIssuesDisplayName() {
+    void testGitLabIssuesDisplayName() {
         assertEquals("GitLab Issues", IssueTracker.GITLAB_ISSUES.getDisplayName());
     }
 
     @Test
-    public void testGitLabIssuesBuildUrl() {
+    void testGitLabIssuesBuildUrl() {
         String url = IssueTracker.GITLAB_ISSUES.buildIssueUrl("https://gitlab.com/group/project", "42");
         assertEquals("https://gitlab.com/group/project/-/issues/42", url);
     }
 
     @Test
-    public void testGitLabIssuesBuildUrlWithHash() {
+    void testGitLabIssuesBuildUrlWithHash() {
         String url = IssueTracker.GITLAB_ISSUES.buildIssueUrl("https://gitlab.com/group/project", "#42");
         assertEquals("https://gitlab.com/group/project/-/issues/42", url);
     }
 
     // ========== YouTrack Tests ==========
-    
+
     @Test
-    public void testYouTrackDisplayName() {
+    void testYouTrackDisplayName() {
         assertEquals("YouTrack", IssueTracker.YOUTRACK.getDisplayName());
     }
 
     @Test
-    public void testYouTrackBuildUrl() {
+    void testYouTrackBuildUrl() {
         String url = IssueTracker.YOUTRACK.buildIssueUrl("https://mycompany.youtrack.cloud", "PROJ-123");
         assertEquals("https://mycompany.youtrack.cloud/issue/PROJ-123", url);
     }
 
     // ========== Linear Tests ==========
-    
+
     @Test
-    public void testLinearDisplayName() {
+    void testLinearDisplayName() {
         assertEquals("Linear", IssueTracker.LINEAR.getDisplayName());
     }
 
     @Test
-    public void testLinearBuildUrl() {
+    void testLinearBuildUrl() {
         String url = IssueTracker.LINEAR.buildIssueUrl("https://linear.app/myteam", "ABC-123");
         assertEquals("https://linear.app/myteam/issue/ABC-123", url);
     }
 
     // ========== Azure Boards Tests ==========
-    
+
     @Test
-    public void testAzureBoardsDisplayName() {
+    void testAzureBoardsDisplayName() {
         assertEquals("Azure Boards", IssueTracker.AZURE_BOARDS.getDisplayName());
     }
 
     @Test
-    public void testAzureBoardsBuildUrl() {
+    void testAzureBoardsBuildUrl() {
         String url = IssueTracker.AZURE_BOARDS.buildIssueUrl("https://dev.azure.com/myorg/myproject", "123");
         assertEquals("https://dev.azure.com/myorg/myproject/_workitems/edit/123", url);
     }
 
     // ========== Bitbucket Issues Tests ==========
-    
+
     @Test
-    public void testBitbucketIssuesDisplayName() {
+    void testBitbucketIssuesDisplayName() {
         assertEquals("Bitbucket Issues", IssueTracker.BITBUCKET_ISSUES.getDisplayName());
     }
 
     @Test
-    public void testBitbucketIssuesBuildUrl() {
+    void testBitbucketIssuesBuildUrl() {
         String url = IssueTracker.BITBUCKET_ISSUES.buildIssueUrl("https://bitbucket.org/team/repo", "42");
         assertEquals("https://bitbucket.org/team/repo/issues/42", url);
     }
 
     // ========== Redmine Tests ==========
-    
+
     @Test
-    public void testRedmineDisplayName() {
+    void testRedmineDisplayName() {
         assertEquals("Redmine", IssueTracker.REDMINE.getDisplayName());
     }
 
     @Test
-    public void testRedmineBuildUrl() {
+    void testRedmineBuildUrl() {
         String url = IssueTracker.REDMINE.buildIssueUrl("https://redmine.mycompany.com", "123");
         assertEquals("https://redmine.mycompany.com/issues/123", url);
     }
 
     // ========== Trello Tests ==========
-    
+
     @Test
-    public void testTrelloDisplayName() {
+    void testTrelloDisplayName() {
         assertEquals("Trello", IssueTracker.TRELLO.getDisplayName());
     }
 
     // ========== Asana Tests ==========
-    
+
     @Test
-    public void testAsanaDisplayName() {
+    void testAsanaDisplayName() {
         assertEquals("Asana", IssueTracker.ASANA.getDisplayName());
     }
 
     // ========== None Tests ==========
-    
+
     @Test
-    public void testNoneDisplayName() {
+    void testNoneDisplayName() {
         assertEquals("None", IssueTracker.NONE.getDisplayName());
     }
 
     @Test
-    public void testNoneBuildUrlReturnsEmpty() {
+    void testNoneBuildUrlReturnsEmpty() {
         String url = IssueTracker.NONE.buildIssueUrl("https://example.com", "123");
         assertEquals("", url);
     }
 
     // ========== Edge Cases ==========
-    
+
     @Test
-    public void testBuildIssueUrlWithNullBaseUrl() {
+    void testBuildIssueUrlWithNullBaseUrl() {
         String url = IssueTracker.JIRA.buildIssueUrl(null, "PROJ-123");
         assertEquals("", url);
     }
 
     @Test
-    public void testBuildIssueUrlWithEmptyBaseUrl() {
+    void testBuildIssueUrlWithEmptyBaseUrl() {
         String url = IssueTracker.JIRA.buildIssueUrl("", "PROJ-123");
         assertEquals("", url);
     }
 
     @Test
-    public void testBuildIssueUrlWithNullIssueId() {
+    void testBuildIssueUrlWithNullIssueId() {
         String url = IssueTracker.JIRA.buildIssueUrl("https://mycompany.atlassian.net", null);
         assertEquals("", url);
     }
 
     @Test
-    public void testBuildIssueUrlWithEmptyIssueId() {
+    void testBuildIssueUrlWithEmptyIssueId() {
         String url = IssueTracker.JIRA.buildIssueUrl("https://mycompany.atlassian.net", "");
         assertEquals("", url);
     }
 
     // ========== Auto-Detection Tests ==========
-    
+
     @Test
-    public void testDetectFromUrlJiraAtlassian() {
+    void testDetectFromUrlJiraAtlassian() {
         assertEquals(IssueTracker.JIRA, IssueTracker.detectFromUrl("https://mycompany.atlassian.net"));
     }
 
     @Test
-    public void testDetectFromUrlJiraSelfHosted() {
+    void testDetectFromUrlJiraSelfHosted() {
         assertEquals(IssueTracker.JIRA, IssueTracker.detectFromUrl("https://jira.mycompany.com"));
     }
 
     @Test
-    public void testDetectFromUrlGitHub() {
+    void testDetectFromUrlGitHub() {
         assertEquals(IssueTracker.GITHUB_ISSUES, IssueTracker.detectFromUrl("https://github.com/user/repo"));
     }
 
     @Test
-    public void testDetectFromUrlGitLab() {
+    void testDetectFromUrlGitLab() {
         assertEquals(IssueTracker.GITLAB_ISSUES, IssueTracker.detectFromUrl("https://gitlab.com/group/project"));
     }
 
     @Test
-    public void testDetectFromUrlGitLabSelfHosted() {
+    void testDetectFromUrlGitLabSelfHosted() {
         assertEquals(IssueTracker.GITLAB_ISSUES, IssueTracker.detectFromUrl("https://gitlab.mycompany.com"));
     }
 
     @Test
-    public void testDetectFromUrlYouTrack() {
+    void testDetectFromUrlYouTrack() {
         assertEquals(IssueTracker.YOUTRACK, IssueTracker.detectFromUrl("https://mycompany.youtrack.cloud"));
     }
 
     @Test
-    public void testDetectFromUrlLinear() {
+    void testDetectFromUrlLinear() {
         assertEquals(IssueTracker.LINEAR, IssueTracker.detectFromUrl("https://linear.app/myteam"));
     }
 
     @Test
-    public void testDetectFromUrlAzureDevOps() {
+    void testDetectFromUrlAzureDevOps() {
         assertEquals(IssueTracker.AZURE_BOARDS, IssueTracker.detectFromUrl("https://dev.azure.com/myorg"));
     }
 
     @Test
-    public void testDetectFromUrlVisualStudio() {
+    void testDetectFromUrlVisualStudio() {
         assertEquals(IssueTracker.AZURE_BOARDS, IssueTracker.detectFromUrl("https://myorg.visualstudio.com"));
     }
 
     @Test
-    public void testDetectFromUrlBitbucket() {
+    void testDetectFromUrlBitbucket() {
         assertEquals(IssueTracker.BITBUCKET_ISSUES, IssueTracker.detectFromUrl("https://bitbucket.org/team/repo"));
     }
 
     @Test
-    public void testDetectFromUrlRedmine() {
+    void testDetectFromUrlRedmine() {
         assertEquals(IssueTracker.REDMINE, IssueTracker.detectFromUrl("https://redmine.mycompany.com"));
     }
 
     @Test
-    public void testDetectFromUrlTrello() {
+    void testDetectFromUrlTrello() {
         assertEquals(IssueTracker.TRELLO, IssueTracker.detectFromUrl("https://trello.com/b/abc123"));
     }
 
     @Test
-    public void testDetectFromUrlAsana() {
+    void testDetectFromUrlAsana() {
         assertEquals(IssueTracker.ASANA, IssueTracker.detectFromUrl("https://app.asana.com/0/123"));
     }
 
     @Test
-    public void testDetectFromUrlUnknown() {
+    void testDetectFromUrlUnknown() {
         assertEquals(IssueTracker.NONE, IssueTracker.detectFromUrl("https://unknown.com"));
     }
 
     @Test
-    public void testDetectFromUrlNull() {
+    void testDetectFromUrlNull() {
         assertEquals(IssueTracker.NONE, IssueTracker.detectFromUrl(null));
     }
 
     @Test
-    public void testDetectFromUrlEmpty() {
+    void testDetectFromUrlEmpty() {
         assertEquals(IssueTracker.NONE, IssueTracker.detectFromUrl(""));
     }
 
     // ========== Uses Repo URL Tests ==========
-    
+
     @Test
-    public void testUsesRepoUrlGitHubIssues() {
+    void testUsesRepoUrlGitHubIssues() {
         assertTrue(IssueTracker.GITHUB_ISSUES.usesRepoUrl());
     }
 
     @Test
-    public void testUsesRepoUrlGitLabIssues() {
+    void testUsesRepoUrlGitLabIssues() {
         assertTrue(IssueTracker.GITLAB_ISSUES.usesRepoUrl());
     }
 
     @Test
-    public void testUsesRepoUrlBitbucketIssues() {
+    void testUsesRepoUrlBitbucketIssues() {
         assertTrue(IssueTracker.BITBUCKET_ISSUES.usesRepoUrl());
     }
 
     @Test
-    public void testUsesRepoUrlJira() {
+    void testUsesRepoUrlJira() {
         assertFalse(IssueTracker.JIRA.usesRepoUrl());
     }
 
     @Test
-    public void testUsesRepoUrlYouTrack() {
+    void testUsesRepoUrlYouTrack() {
         assertFalse(IssueTracker.YOUTRACK.usesRepoUrl());
     }
 
     // ========== All Trackers Exist Tests ==========
-    
+
     @Test
-    public void testAllTrackersHaveDisplayName() {
+    void testAllTrackersHaveDisplayName() {
         for (IssueTracker tracker : IssueTracker.values()) {
             assertThat(tracker.getDisplayName()).isNotNull().isNotEmpty();
         }
     }
 
     @Test
-    public void testAllTrackersHaveTermName() {
+    void testAllTrackersHaveTermName() {
         for (IssueTracker tracker : IssueTracker.values()) {
             assertThat(tracker.getTermName()).isNotNull().isNotEmpty();
         }
     }
 
     @Test
-    public void testAllTrackersHaveExampleFormat() {
+    void testAllTrackersHaveExampleFormat() {
         for (IssueTracker tracker : IssueTracker.values()) {
             assertThat(tracker.getExampleFormat()).isNotNull().isNotEmpty();
         }
     }
 
     // ========== ToString Tests ==========
-    
+
     @Test
-    public void testToString() {
+    void testToString() {
         assertEquals("JIRA", IssueTracker.JIRA.toString());
         assertEquals("GitHub Issues", IssueTracker.GITHUB_ISSUES.toString());
     }

@@ -1,300 +1,301 @@
 package com.changelogpro.config;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for ChangeLogConfig class.
  * Note: These tests focus on the configuration logic without IntelliJ dependencies.
  */
-public class ChangeLogConfigTest {
+class ChangeLogConfigTest {
 
     // ========== GitProvider Detection Tests ==========
-    
+
     @Test
-    public void testGitProviderDetectionGitHub() {
+    void testGitProviderDetectionGitHub() {
         GitProvider provider = GitProvider.detectFromUrl("https://github.com/user/repo");
         assertEquals(GitProvider.GITHUB, provider);
     }
 
     @Test
-    public void testGitProviderDetectionGitLab() {
+    void testGitProviderDetectionGitLab() {
         GitProvider provider = GitProvider.detectFromUrl("https://gitlab.com/group/project");
         assertEquals(GitProvider.GITLAB, provider);
     }
 
     @Test
-    public void testGitProviderDetectionBitbucket() {
+    void testGitProviderDetectionBitbucket() {
         GitProvider provider = GitProvider.detectFromUrl("https://bitbucket.org/team/repo");
         assertEquals(GitProvider.BITBUCKET, provider);
     }
 
     @Test
-    public void testGitProviderDetectionAzureDevOps() {
+    void testGitProviderDetectionAzureDevOps() {
         GitProvider provider = GitProvider.detectFromUrl("https://dev.azure.com/org/project/_git/repo");
         assertEquals(GitProvider.AZURE_DEVOPS, provider);
     }
 
     @Test
-    public void testGitProviderDetectionGitea() {
+    void testGitProviderDetectionGitea() {
         GitProvider provider = GitProvider.detectFromUrl("https://gitea.example.com/user/repo");
         assertEquals(GitProvider.GITEA, provider);
     }
 
     @Test
-    public void testGitProviderDetectionCustom() {
+    void testGitProviderDetectionCustom() {
         GitProvider provider = GitProvider.detectFromUrl("https://custom-git.example.com/repo");
         assertEquals(GitProvider.CUSTOM, provider);
     }
 
     // ========== IssueTracker Detection Tests ==========
-    
+
     @Test
-    public void testIssueTrackerDetectionJira() {
+    void testIssueTrackerDetectionJira() {
         IssueTracker tracker = IssueTracker.detectFromUrl("https://company.atlassian.net");
         assertEquals(IssueTracker.JIRA, tracker);
     }
 
     @Test
-    public void testIssueTrackerDetectionYouTrack() {
+    void testIssueTrackerDetectionYouTrack() {
         IssueTracker tracker = IssueTracker.detectFromUrl("https://company.youtrack.cloud");
         assertEquals(IssueTracker.YOUTRACK, tracker);
     }
 
     @Test
-    public void testIssueTrackerDetectionLinear() {
+    void testIssueTrackerDetectionLinear() {
         IssueTracker tracker = IssueTracker.detectFromUrl("https://linear.app/team");
         assertEquals(IssueTracker.LINEAR, tracker);
     }
 
     @Test
-    public void testIssueTrackerDetectionGitHubIssues() {
+    void testIssueTrackerDetectionGitHubIssues() {
         IssueTracker tracker = IssueTracker.detectFromUrl("https://github.com/user/repo");
         assertEquals(IssueTracker.GITHUB_ISSUES, tracker);
     }
 
     @Test
-    public void testIssueTrackerDetectionGitLabIssues() {
+    void testIssueTrackerDetectionGitLabIssues() {
         IssueTracker tracker = IssueTracker.detectFromUrl("https://gitlab.com/group/project");
         assertEquals(IssueTracker.GITLAB_ISSUES, tracker);
     }
 
     // ========== GitHub Configuration Tests ==========
-    
+
     @Test
-    public void testGitHubPrUrl() {
+    void testGitHubPrUrl() {
         String url = GitProvider.GITHUB.buildPrUrl("https://github.com/user/repo", "123");
         assertEquals("https://github.com/user/repo/pull/123", url);
     }
 
     @Test
-    public void testGitHubPrTerm() {
+    void testGitHubPrTerm() {
         assertEquals("Pull Request", GitProvider.GITHUB.getPrTermFull());
         assertEquals("PR", GitProvider.GITHUB.getPrTermShort());
     }
 
     // ========== GitLab Configuration Tests ==========
-    
+
     @Test
-    public void testGitLabMrUrl() {
+    void testGitLabMrUrl() {
         String url = GitProvider.GITLAB.buildPrUrl("https://gitlab.com/group/project", "456");
         assertEquals("https://gitlab.com/group/project/-/merge_requests/456", url);
     }
 
     @Test
-    public void testGitLabMrTerm() {
+    void testGitLabMrTerm() {
         assertEquals("Merge Request", GitProvider.GITLAB.getPrTermFull());
         assertEquals("MR", GitProvider.GITLAB.getPrTermShort());
     }
 
     // ========== Bitbucket Configuration Tests ==========
-    
+
     @Test
-    public void testBitbucketPrUrl() {
+    void testBitbucketPrUrl() {
         String url = GitProvider.BITBUCKET.buildPrUrl("https://bitbucket.org/team/repo", "789");
         assertEquals("https://bitbucket.org/team/repo/pull-requests/789", url);
     }
 
     // ========== Azure DevOps Configuration Tests ==========
-    
+
     @Test
-    public void testAzureDevOpsPrUrl() {
+    void testAzureDevOpsPrUrl() {
         String url = GitProvider.AZURE_DEVOPS.buildPrUrl("https://dev.azure.com/org/project/_git/repo", "100");
         assertEquals("https://dev.azure.com/org/project/_git/repo/pullrequest/100", url);
     }
 
     // ========== JIRA Configuration Tests ==========
-    
+
     @Test
-    public void testJiraIssueUrl() {
+    void testJiraIssueUrl() {
         String url = IssueTracker.JIRA.buildIssueUrl("https://company.atlassian.net", "PROJ-123");
         assertEquals("https://company.atlassian.net/browse/PROJ-123", url);
     }
 
     @Test
-    public void testJiraIssueUrlWithTrailingSlash() {
+    void testJiraIssueUrlWithTrailingSlash() {
         String url = IssueTracker.JIRA.buildIssueUrl("https://company.atlassian.net/", "PROJ-123");
         assertEquals("https://company.atlassian.net/browse/PROJ-123", url);
     }
 
     // ========== GitHub Issues Configuration Tests ==========
-    
+
     @Test
-    public void testGitHubIssueUrl() {
+    void testGitHubIssueUrl() {
         String url = IssueTracker.GITHUB_ISSUES.buildIssueUrl("https://github.com/user/repo", "456");
         assertEquals("https://github.com/user/repo/issues/456", url);
     }
 
     // ========== GitLab Issues Configuration Tests ==========
-    
+
     @Test
-    public void testGitLabIssueUrl() {
+    void testGitLabIssueUrl() {
         String url = IssueTracker.GITLAB_ISSUES.buildIssueUrl("https://gitlab.com/group/project", "789");
         assertEquals("https://gitlab.com/group/project/-/issues/789", url);
     }
 
     // ========== YouTrack Configuration Tests ==========
-    
+
     @Test
-    public void testYouTrackIssueUrl() {
+    void testYouTrackIssueUrl() {
         String url = IssueTracker.YOUTRACK.buildIssueUrl("https://company.youtrack.cloud", "PROJ-100");
         assertEquals("https://company.youtrack.cloud/issue/PROJ-100", url);
     }
 
     // ========== Linear Configuration Tests ==========
-    
+
     @Test
-    public void testLinearIssueUrl() {
+    void testLinearIssueUrl() {
         String url = IssueTracker.LINEAR.buildIssueUrl("https://linear.app/team", "TEAM-200");
         assertEquals("https://linear.app/team/issue/TEAM-200", url);
     }
 
     // ========== Azure Boards Configuration Tests ==========
-    
+
     @Test
-    public void testAzureBoardsIssueUrl() {
+    void testAzureBoardsIssueUrl() {
         String url = IssueTracker.AZURE_BOARDS.buildIssueUrl("https://dev.azure.com/org/project", "300");
         assertEquals("https://dev.azure.com/org/project/_workitems/edit/300", url);
     }
 
     // ========== Redmine Configuration Tests ==========
-    
+
     @Test
-    public void testRedmineIssueUrl() {
+    void testRedmineIssueUrl() {
         String url = IssueTracker.REDMINE.buildIssueUrl("https://redmine.example.com", "400");
         assertEquals("https://redmine.example.com/issues/400", url);
     }
 
     // ========== Bitbucket Issues Configuration Tests ==========
-    
+
     @Test
-    public void testBitbucketIssueUrl() {
+    void testBitbucketIssueUrl() {
         String url = IssueTracker.BITBUCKET_ISSUES.buildIssueUrl("https://bitbucket.org/team/repo", "500");
         assertEquals("https://bitbucket.org/team/repo/issues/500", url);
     }
 
     // ========== Mixed Configuration Tests ==========
-    
+
     @Test
-    public void testGitHubWithJiraConfiguration() {
+    void testGitHubWithJiraConfiguration() {
         // Common scenario: GitHub for code, JIRA for issues
         GitProvider gitProvider = GitProvider.GITHUB;
         IssueTracker issueTracker = IssueTracker.JIRA;
-        
+
         String prUrl = gitProvider.buildPrUrl("https://github.com/myorg/myproject", "123");
         String issueUrl = issueTracker.buildIssueUrl("https://mycompany.atlassian.net", "PROJ-456");
-        
+
         assertEquals("https://github.com/myorg/myproject/pull/123", prUrl);
         assertEquals("https://mycompany.atlassian.net/browse/PROJ-456", issueUrl);
     }
 
     @Test
-    public void testGitLabWithYouTrackConfiguration() {
+    void testGitLabWithYouTrackConfiguration() {
         GitProvider gitProvider = GitProvider.GITLAB;
         IssueTracker issueTracker = IssueTracker.YOUTRACK;
-        
+
         String mrUrl = gitProvider.buildPrUrl("https://gitlab.com/group/project", "789");
         String issueUrl = issueTracker.buildIssueUrl("https://mycompany.youtrack.cloud", "PROJ-100");
-        
+
         assertEquals("https://gitlab.com/group/project/-/merge_requests/789", mrUrl);
         assertEquals("https://mycompany.youtrack.cloud/issue/PROJ-100", issueUrl);
     }
 
     // ========== Empty/Null URL Tests ==========
-    
+
     @Test
-    public void testGitProviderDetectionEmptyUrl() {
+    void testGitProviderDetectionEmptyUrl() {
         GitProvider provider = GitProvider.detectFromUrl("");
         assertEquals(GitProvider.CUSTOM, provider);
     }
 
     @Test
-    public void testGitProviderDetectionNullUrl() {
+    void testGitProviderDetectionNullUrl() {
         GitProvider provider = GitProvider.detectFromUrl(null);
         assertEquals(GitProvider.CUSTOM, provider);
     }
 
     @Test
-    public void testIssueTrackerDetectionEmptyUrl() {
+    void testIssueTrackerDetectionEmptyUrl() {
         IssueTracker tracker = IssueTracker.detectFromUrl("");
         assertEquals(IssueTracker.NONE, tracker);
     }
 
     @Test
-    public void testIssueTrackerDetectionNullUrl() {
+    void testIssueTrackerDetectionNullUrl() {
         IssueTracker tracker = IssueTracker.detectFromUrl(null);
         assertEquals(IssueTracker.NONE, tracker);
     }
 
     @Test
-    public void testBuildPrUrlWithEmptyRepoUrl() {
+    void testBuildPrUrlWithEmptyRepoUrl() {
         String url = GitProvider.GITHUB.buildPrUrl("", "123");
         assertEquals("", url);
     }
 
     @Test
-    public void testBuildIssueUrlWithEmptyBaseUrl() {
+    void testBuildIssueUrlWithEmptyBaseUrl() {
         String url = IssueTracker.JIRA.buildIssueUrl("", "PROJ-123");
         assertEquals("", url);
     }
 
     // ========== Uses Repo URL Tests ==========
-    
+
     @Test
-    public void testGitHubIssuesUsesRepoUrl() {
+    void testGitHubIssuesUsesRepoUrl() {
         assertTrue(IssueTracker.GITHUB_ISSUES.usesRepoUrl());
     }
 
     @Test
-    public void testGitLabIssuesUsesRepoUrl() {
+    void testGitLabIssuesUsesRepoUrl() {
         assertTrue(IssueTracker.GITLAB_ISSUES.usesRepoUrl());
     }
 
     @Test
-    public void testBitbucketIssuesUsesRepoUrl() {
+    void testBitbucketIssuesUsesRepoUrl() {
         assertTrue(IssueTracker.BITBUCKET_ISSUES.usesRepoUrl());
     }
 
     @Test
-    public void testJiraDoesNotUseRepoUrl() {
+    void testJiraDoesNotUseRepoUrl() {
         assertFalse(IssueTracker.JIRA.usesRepoUrl());
     }
 
     @Test
-    public void testYouTrackDoesNotUseRepoUrl() {
+    void testYouTrackDoesNotUseRepoUrl() {
         assertFalse(IssueTracker.YOUTRACK.usesRepoUrl());
     }
 
     @Test
-    public void testLinearDoesNotUseRepoUrl() {
+    void testLinearDoesNotUseRepoUrl() {
         assertFalse(IssueTracker.LINEAR.usesRepoUrl());
     }
 
     // ========== All Providers Have Required Methods ==========
-    
+
     @Test
-    public void testAllGitProvidersHavePrTerm() {
+    void testAllGitProvidersHavePrTerm() {
         for (GitProvider provider : GitProvider.values()) {
             assertThat(provider.getPrTermFull()).isNotNull().isNotEmpty();
             assertThat(provider.getPrTermShort()).isNotNull().isNotEmpty();
@@ -302,14 +303,14 @@ public class ChangeLogConfigTest {
     }
 
     @Test
-    public void testAllGitProvidersHaveDisplayName() {
+    void testAllGitProvidersHaveDisplayName() {
         for (GitProvider provider : GitProvider.values()) {
             assertThat(provider.getDisplayName()).isNotNull().isNotEmpty();
         }
     }
 
     @Test
-    public void testAllIssueTrackersHaveDisplayName() {
+    void testAllIssueTrackersHaveDisplayName() {
         for (IssueTracker tracker : IssueTracker.values()) {
             assertThat(tracker.getDisplayName()).isNotNull().isNotEmpty();
         }

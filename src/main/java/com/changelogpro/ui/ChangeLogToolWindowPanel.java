@@ -3,6 +3,7 @@ package com.changelogpro.ui;
 import com.changelogpro.config.*;
 import com.changelogpro.services.ChangeLogProjectService;
 import com.changelogpro.services.LogService;
+import com.changelogpro.ui.analytics.AnalyticsDashboardPanel;
 import com.changelogpro.wizard.GenerateChangelogDialog;
 import com.changelogpro.wizard.InitializeWizardDialog;
 import com.changelogpro.wizard.NewEntryWizardDialog;
@@ -38,6 +39,7 @@ public class ChangeLogToolWindowPanel extends JPanel {
     private JBLabel statusLabel;
     private JBTextArea logArea;
     private JPanel statsPanel;
+    private AnalyticsDashboardPanel analyticsPanel;
     
     // Config tab components
     private JBTextField repoUrlField;
@@ -69,6 +71,21 @@ public class ChangeLogToolWindowPanel extends JPanel {
         tabbedPane.addTab("Config", AllIcons.General.Settings, createConfigPanel());
         tabbedPane.addTab("Log", AllIcons.Debugger.Console, createLogPanel());
         tabbedPane.addTab("Help", AllIcons.Actions.Help, createHelpPanel());
+        
+        // Analytics tab - lazy loaded on first access
+        analyticsPanel = new AnalyticsDashboardPanel(project);
+        tabbedPane.addTab("Analytics", AllIcons.Toolwindows.ToolWindowStructure, analyticsPanel, 
+            "View project analytics and insights");
+        
+        // Add tab change listener to refresh analytics when selected
+        tabbedPane.addChangeListener(e -> {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            String tabTitle = tabbedPane.getTitleAt(selectedIndex);
+            if ("Analytics".equals(tabTitle) && analyticsPanel != null) {
+                // Refresh analytics data when tab is opened
+                analyticsPanel.loadDataAsync(false);
+            }
+        });
         
         add(tabbedPane, BorderLayout.CENTER);
     }
