@@ -1,7 +1,6 @@
 package com.changelogpro.services;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -221,8 +220,8 @@ public class GitService {
      */
     @Nullable
     private String executeGitCommand(String... args) {
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir == null) {
+        String basePath = project.getBasePath();
+        if (basePath == null) {
             logService.error("Project base directory not found");
             return null;
         }
@@ -233,7 +232,7 @@ public class GitService {
             System.arraycopy(args, 0, command, 1, args.length);
             
             ProcessBuilder pb = new ProcessBuilder(command);
-            pb.directory(new File(baseDir.getPath()));
+            pb.directory(new File(basePath));
             pb.redirectErrorStream(true);
             
             Process process = pb.start();

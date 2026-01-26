@@ -17,13 +17,15 @@ public final class ChangeLogProjectService {
     private final GitService gitService;
     private final FileService fileService;
     private final LogService logService;
-    
+    private final ProjectVersionService projectVersionService;
+
     public ChangeLogProjectService(@NotNull Project project) {
         this.project = project;
         this.config = new ChangeLogConfig(project);
         this.logService = new LogService(project);
         this.gitService = new GitService(project, logService);
         this.fileService = new FileService(project, config, gitService, logService);
+        this.projectVersionService = new ProjectVersionService(project, logService);
     }
     
     /**
@@ -93,5 +95,9 @@ public final class ChangeLogProjectService {
     @NotNull
     public static ChangeLogProjectService getInstance(@NotNull Project project) {
         return project.getService(ChangeLogProjectService.class);
+    }
+
+    public ProjectVersionService getProjectVersionService() {
+        return projectVersionService;
     }
 }

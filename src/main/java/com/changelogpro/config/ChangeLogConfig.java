@@ -1,12 +1,10 @@
 package com.changelogpro.config;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
@@ -48,10 +46,10 @@ public class ChangeLogConfig {
      * Load configuration from file.
      */
     public void load() {
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir == null) return;
+        String basePath = project.getBasePath();
+        if (basePath == null) return;
         
-        File configFile = new File(baseDir.getPath(), CONFIG_FILE_NAME);
+        File configFile = new File(basePath, CONFIG_FILE_NAME);
         if (!configFile.exists()) return;
         
         Properties props = new Properties();
@@ -75,8 +73,8 @@ public class ChangeLogConfig {
      * Save configuration to file.
      */
     public void save() {
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir == null) return;
+        String basePath = project.getBasePath();
+        if (basePath == null) return;
         
         Properties props = new Properties();
         props.setProperty(KEY_REPO_URL, repoUrl);
@@ -87,7 +85,7 @@ public class ChangeLogConfig {
         props.setProperty(KEY_CHANGELOG_FILE, changelogFile);
         props.setProperty(KEY_INITIALIZED, String.valueOf(initialized));
         
-        File configFile = new File(baseDir.getPath(), CONFIG_FILE_NAME);
+        File configFile = new File(basePath, CONFIG_FILE_NAME);
         try (OutputStream os = new FileOutputStream(configFile)) {
             props.store(os, "ChangeLog Pro Configuration");
         } catch (IOException e) {
@@ -100,9 +98,9 @@ public class ChangeLogConfig {
      */
     @Nullable
     public String getChangesDirectory() {
-        VirtualFile baseDir = project.getBaseDir();
-        if (baseDir == null) return null;
-        return baseDir.getPath() + File.separator + CHANGES_DIR;
+        String basePath = project.getBasePath();
+        if (basePath == null) return null;
+        return basePath + File.separator + CHANGES_DIR;
     }
     
     /**

@@ -1,36 +1,75 @@
 # ChangeLog Pro
 
-**Professional Changelog Management for IntelliJ IDEA**
+**Professional Changelog Management & Analytics for IntelliJ IDEA**
+
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://plugins.jetbrains.com/plugin/changelog-pro)
+[![IntelliJ](https://img.shields.io/badge/IntelliJ-2022.1%20–%202025.3-orange.svg)](https://www.jetbrains.com/idea/)
 
 ChangeLog Pro is a powerful IntelliJ IDEA plugin that helps you maintain professional, well-structured changelogs following the [Keep a Changelog](https://keepachangelog.com) standard and [Semantic Versioning](https://semver.org) principles.
 
-## Overview
+## 🚀 What's New in v2.0
 
-Managing changelogs manually can be tedious and error-prone, especially in teams where multiple developers work on the same project. ChangeLog Pro solves this by using a fragment-based approach where each change is stored as a separate YAML file, preventing merge conflicts and enabling parallel development.
+- **📊 Complete Analytics Dashboard** with 7 specialized panels
+- **📈 Trends & Predictions** for release velocity and patterns
+- **🔍 Git Insights** with conventional commits analysis
+- **👥 Contributors Heatmap** (GitHub-style, 52 weeks)
+- **🏥 Health Score** with actionable recommendations
+- **📥 Git History Import** to import commits as changelog entries
+- **📤 HTML Export** with light/dark themes
 
-## Features
+## ✨ Features
 
-### Universal Git Support
+### 📊 Analytics Dashboard (NEW in v2.0)
 
-ChangeLog Pro works with all major Git hosting platforms including GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, and Gogs. It automatically detects your Git provider from the repository URL and configures appropriate settings for Pull Request or Merge Request links.
+Get deep insights into your project's changelog and Git history:
 
-### Issue Tracker Integration
+| Panel | Description |
+|-------|-------------|
+| **Timeline** | Chronological release view with period filtering |
+| **Changes** | Visual breakdown by change type (bar/pie charts) |
+| **Git Insights** | Commit activity, conventional commits %, coverage |
+| **Contributors** | Team leaderboard with 52-week activity heatmap |
+| **Health** | Project health score (A+ to F) with recommendations |
+| **Trends** | Release velocity, commit patterns, predictions |
+| **Compare** | Side-by-side release comparison |
 
-Connect your changelog entries to your issue tracker of choice. ChangeLog Pro supports JIRA, GitHub Issues, GitLab Issues, YouTrack, Linear, Azure Boards, and Redmine. Custom issue trackers can also be configured with a base URL pattern.
+**8 KPI Cards** at a glance:
+- Releases · Commits · Avg Cycle · Version
+- Contributors · Conventional % · Health · Breaking Changes
 
-### Multi-Step Wizard
+### 🔌 Universal Git Support
 
-The intuitive wizard guides you through creating changelog entries with validation at each step. Select the change type, enter details including description, issue ID, and PR/MR number, then review and confirm before creating the entry.
+Works with all major Git hosting platforms:
+- GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, Gogs, Custom
 
-### Quick Add Buttons
+### 🎫 Issue Tracker Integration
 
-For rapid entry creation, use the Quick Add buttons to create entries for any of the six standard change types: Added, Changed, Deprecated, Removed, Fixed, and Security.
+- JIRA, GitHub Issues, GitLab Issues, YouTrack, Linear, Azure Boards, Redmine, Custom
 
-### Comprehensive Documentation
+### 📝 Multi-Step Wizard
 
-Built-in documentation explains changelog best practices, the importance of keeping a changelog, and how to write effective entries. Access it anytime from the Help tab in the tool window.
+Guided changelog entry creation with validation at each step.
 
-## Installation
+### ⚡ Quick Add Buttons
+
+Rapid entry creation for all 6 standard change types:
+- Added, Changed, Deprecated, Removed, Fixed, Security
+
+### 📥 Git History Import
+
+Import changelog entries directly from Git commits:
+- Auto-detect conventional commits
+- Map commit types to changelog categories
+- Batch import with filtering
+
+### 📤 HTML Export
+
+Export analytics reports as standalone HTML files with:
+- Light and dark theme support
+- Customizable sections
+- Professional styling
+
+## 📦 Installation
 
 ### From JetBrains Marketplace
 
@@ -46,21 +85,32 @@ Built-in documentation explains changelog best practices, the importance of keep
 3. Select the downloaded ZIP file
 4. Restart IntelliJ IDEA
 
-## Getting Started
+## 🏁 Getting Started
 
-After installation, the ChangeLog Pro icon appears in the right sidebar. Click it to open the tool window.
+After installation, the ChangeLog Pro icon appears in the right sidebar.
 
-### Initialize Your Project
+### 1. Initialize Your Project
 
-Click **Initialize Project** to set up the changelog structure. The wizard will auto-detect your repository URL and Git provider. Configure your issue tracker and click OK to create the directory structure.
+Click **Initialize Project** to set up the changelog structure:
+- Auto-detects your repository URL and Git provider
+- Configure your issue tracker
+- Creates the directory structure
 
-### Create Changelog Entries
+### 2. Create Changelog Entries
 
-Use the **New Entry (Wizard)** button for guided entry creation, or use the Quick Add buttons for rapid entry creation. Each entry is saved as a YAML file in `.changes/unreleased/` organized by change type.
+- **New Entry (Wizard)** - Guided entry creation
+- **Quick Add** - Rapid entry creation
+- **Import Git** - Import from Git history
+
+### 3. View Analytics
+
+Click the **Analytics** tab to see:
+- Project health score and recommendations
+- Release velocity trends
+- Contributors activity heatmap
+- Git insights and conventional commits metrics
 
 ### Directory Structure
-
-After initialization, your project will have the following structure:
 
 ```
 project-root/
@@ -76,9 +126,7 @@ project-root/
 └── CHANGELOG.md
 ```
 
-## Configuration
-
-The Config tab in the tool window allows you to modify settings at any time:
+## ⚙️ Configuration
 
 | Setting | Description |
 |---------|-------------|
@@ -88,17 +136,17 @@ The Config tab in the tool window allows you to modify settings at any time:
 | Tracker URL | Base URL for issue links |
 | Auto-stage | Automatically stage files after creation |
 
-## Keyboard Shortcuts
+## ⌨️ Keyboard Shortcuts
 
 | Action | Shortcut |
 |--------|----------|
 | New Changelog Entry | `Ctrl+Alt+L` |
 
-## Building from Source
+## 🛠️ Building from Source
 
 ### Prerequisites
 
-- JDK 11 or higher
+- JDK 17 or higher
 - Gradle 8.x
 
 ### Build Commands
@@ -110,28 +158,60 @@ The Config tab in the tool window allows you to modify settings at any time:
 # Run in a sandbox IDE
 ./gradlew runIde
 
+# Run tests
+./gradlew test
+
 # Verify plugin compatibility
 ./gradlew verifyPlugin
 ```
 
-The built plugin will be located at `build/distributions/changelog-pro-1.0.0.zip`.
+The built plugin will be located at `build/distributions/changelog-pro-2.0.0.zip`.
 
-## Compatibility
+## 🔧 Compatibility
 
-ChangeLog Pro is compatible with IntelliJ IDEA Community and Ultimate editions from version 2022.1 through 2025.3.
+ChangeLog Pro is compatible with:
+- IntelliJ IDEA Community and Ultimate (2022.1 – 2025.3)
+- Android Studio
+- PyCharm, WebStorm, PhpStorm, and other JetBrains IDEs
 
-## Contributing
+## 📊 Analytics Features in Detail
 
-Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
+### Health Score Calculation
 
-## Author
+The health score (0-100) is based on:
+- Changelog usage and consistency
+- Release frequency and cycle time
+- Documentation coverage
+- Conventional commits adoption
+- Team bus factor
+
+### Trend Analysis
+
+- Release velocity (accelerating/stable/slowing)
+- Commit patterns (peak hours, productive days)
+- Next release prediction
+- Technical debt indicators
+
+### Git Insights
+
+- Conventional commits percentage
+- Breaking changes tracking
+- Documentation coverage
+- Monthly activity charts
+
+## 👨‍💻 Author
 
 Developed by **Abdelmoula SOUIDI**
 
-## License
+## 📄 License
 
-This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🤝 Contributing
 
-For bug reports and feature requests, please contact abdelmoula.souidi on gmail. For more information, visit [Izem Technologies](https://www.izemtechnologies.com).
+Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
+
+## 📧 Support
+
+- **Issues**: [GitHub Issues](https://github.com/asouidi/changelog-pro/issues)
+- **Email**: abdelmoula.souidi@gmail.com
